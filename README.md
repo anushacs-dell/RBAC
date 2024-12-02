@@ -41,3 +41,102 @@ It includes user registration, login, and logout functionality along with protec
    ```bash
    git clone https://github.com/anushacs-dell/RBAC.git
    cd RBAC
+
+### Api Endpoints
+
+## Register User
+   POST /register
+
+Request Body:(JSON)
+{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "password123",
+    "role": "User"
+}
+
+Response:
+{
+    "message": "Registered successfully"
+}
+
+## Login
+POST /login
+
+Request Body:(JSON)
+{
+    "username": "testuser",
+    "password": "password123"
+}
+Response:
+{
+    "message": "Login successfully",
+    "access_token": "<access_token>",
+    "refresh_token": "<refresh_token>"
+}
+## Logout
+POST /logout
+
+Request Body:
+{
+    "refresh_token": "<refresh_token>"
+}
+Response:
+{
+    "message": "Logout Successful"
+}
+## Access Admin View
+GET /admin
+
+Requires the Admin role.
+
+Response:
+{
+    "message": "Welcome Admin"
+}
+## Access User View
+GET /user
+
+Requires the User role.
+
+Response:
+{
+    "message": "Welcome User"
+}
+## Access Moderator View
+GET /moderator
+
+Requires the Moderator role.
+
+Response:
+{
+    "message": "Welcome Moderator"
+}
+## Token Refresh
+POST /api/token/refresh/
+
+Request Body:(JSON)
+{
+    "refresh": "<refresh_token>"
+}
+Response:
+{
+    "access": "<new_access_token>"
+}
+
+### Future Improvements
+Implementing email verification during registration.
+Adding password reset functionality.
+set custom permissions : (permissions.py)
+    from rest_framework.permissions import BasePermission
+    
+    class IsAdmin(BasePermission):
+        def has_permission(self, request, view):
+            return request.user.role == 'Admin'
+(views.py)
+    from .permissions import IsAdmin
+
+    @api_view(['GET'])
+    @permission_classes([IsAdmin])
+    def admin_view(request):
+        return Response({"message": "Welcome Admin"})
