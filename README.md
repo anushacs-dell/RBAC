@@ -39,5 +39,5 @@ It includes user registration, login, and logout functionality along with protec
 1. Clone the repository:
 
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/anushacs-dell/RBAC.git
    cd RBAC
